@@ -54,6 +54,23 @@ function init() {
     grid.material.transparent = true;
     scene.add(grid);
     
+
+    // Agregar algunos cubos al mapa
+    const cubeGeometry = new THREE.BoxGeometry(50, 50, 50);
+    const cubeMaterial = new THREE.MeshPhongMaterial({ color: 0x00ff00 });
+    for (let i = 0; i < 10; i++) {
+        const cube = new THREE.Mesh(cubeGeometry, cubeMaterial);
+        cube.position.set(
+            Math.random() * 2000 - 1000,
+            25,
+            Math.random() * 2000 - 1000
+        );
+        cube.castShadow = true;
+        cube.receiveShadow = true;
+        scene.add(cube);
+        collidableObjects.push(cube);
+    }
+
     const loader = new FBXLoader();
 
     // Cargar el modelo Soldier
@@ -212,6 +229,7 @@ function animate() {
             model.position.add(moveVector);
         }
     }
+
 
     renderer.render(scene, camera);
     stats.update();
