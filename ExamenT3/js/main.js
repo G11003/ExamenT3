@@ -55,29 +55,6 @@ function init() {
 
     const loader = new FBXLoader();
 
-    // Cargar el modelo de Monokuma
-    loader.load('models/fbx/Monokuma.fbx', function (object) {
-        const scale = 50; // Ajusta la escala del modelo Monokuma
-        object.scale.set(scale, scale, scale);
-
-        for (let i = 0; i < 10; i++) {
-            const clone = object.clone();
-            clone.position.set(
-                Math.random() * 2000 - 1000,
-                0,
-                Math.random() * 2000 - 1000
-            );
-            clone.traverse(function (child) {
-                if (child.isMesh) {
-                    child.castShadow = true;
-                    child.receiveShadow = true;
-                }
-            });
-            scene.add(clone);
-            collidableObjects.push(clone);
-        }
-    });
-
     // Cargar el modelo principal
     loader.load('models/fbx/Bruja.fbx', function (object) {
         console.log('Modelo cargado:', object);
@@ -126,6 +103,30 @@ function init() {
         loader.load('models/fbx/magia3.fbx', function (anim) {
             const magia3Action = mixer.clipAction(anim.animations[0]);
             actions.magia3 = magia3Action;
+        });
+
+        // Cargar el modelo de Monokuma y añadirlo a la escena
+        loader.load('models/fbx/Monokuma.fbx', function (monokuma) {
+            const brujaScale = new THREE.Box3().setFromObject(model).getSize(new THREE.Vector3());
+            const scale = new THREE.Vector3(1 / 140, 1 / 250, 1 / 50).multiply(brujaScale);
+            monokuma.scale.set(scale.x, scale.y, scale.z);
+
+            for (let i = 0; i < 10; i++) {
+                const clone = monokuma.clone();
+                clone.position.set(
+                    Math.random() * 2000 - 1000,
+                    0,
+                    Math.random() * 2000 - 1000
+                );
+                clone.traverse(function (child) {
+                    if (child.isMesh) {
+                        child.castShadow = true;
+                        child.receiveShadow = true;
+                    }
+                });
+                scene.add(clone);
+                collidableObjects.push(clone);
+            }
         });
 
         window.addEventListener('keydown', handleKeyDown);
