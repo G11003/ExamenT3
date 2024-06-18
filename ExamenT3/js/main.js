@@ -4,7 +4,7 @@ import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import { FBXLoader } from 'three/addons/loaders/FBXLoader.js';
 import { GUI } from 'three/addons/libs/lil-gui.module.min.js';
 
-let camera, scene, renderer, clock, mixer, model, actions, activeAction, previousAction;
+let camera, scene, renderer, clock, mixer, model, actions, activeAction, previousAction, controls;
 const keyboard = {};
 const moveSpeed = 250; // Ajusta la velocidad de movimiento del personaje
 const cameraMoveSpeed = 100; // Ajusta la velocidad de movimiento de la cámara
@@ -53,25 +53,32 @@ function init() {
     grid.material.transparent = true;
     scene.add(grid);
 
-    // Agregar algunos cubos al mapa
-    const cubeGeometry = new THREE.BoxGeometry(50, 50, 50);
-    const cubeMaterial = new THREE.MeshPhongMaterial({ color: 0x00ff00 });
-    for (let i = 0; i < 10; i++) {
-        const cube = new THREE.Mesh(cubeGeometry, cubeMaterial);
-        cube.position.set(
-            Math.random() * 2000 - 1000,
-            25,
-            Math.random() * 2000 - 1000
-        );
-        cube.castShadow = true;
-        cube.receiveShadow = true;
-        scene.add(cube);
-        collidableObjects.push(cube);
-    }
-
     const loader = new FBXLoader();
 
-    // Cargar el modelo Soldier
+    // Cargar el modelo de Monokuma
+    loader.load('models/fbx/Monokuma.fbx', function (object) {
+        const scale = 50; // Ajusta la escala del modelo Monokuma
+        object.scale.set(scale, scale, scale);
+
+        for (let i = 0; i < 10; i++) {
+            const clone = object.clone();
+            clone.position.set(
+                Math.random() * 2000 - 1000,
+                0,
+                Math.random() * 2000 - 1000
+            );
+            clone.traverse(function (child) {
+                if (child.isMesh) {
+                    child.castShadow = true;
+                    child.receiveShadow = true;
+                }
+            });
+            scene.add(clone);
+            collidableObjects.push(clone);
+        }
+    });
+
+    // Cargar el modelo principal
     loader.load('models/fbx/Bruja.fbx', function (object) {
         console.log('Modelo cargado:', object);
         model = object;
@@ -133,7 +140,7 @@ function init() {
     renderer.shadowMap.enabled = true;
     container.appendChild(renderer.domElement);
 
-    const controls = new OrbitControls(camera, renderer.domElement);
+    controls = new OrbitControls(camera, renderer.domElement);
     controls.target.set(0, 100, 0);
     controls.update();
 
@@ -228,17 +235,26 @@ function animate() {
         }
     }
 
+    let cameraMoveX = 0;
+    let cameraMoveZ = 0;
+
     if (keyboard['arrowup']) {
-        camera.position.y += cameraMoveDistance;
+        cameraMoveZ = -cameraMoveDistance;
     }
     if (keyboard['arrowdown']) {
-        camera.position.y -= cameraMoveDistance;
+        cameraMoveZ = cameraMoveDistance;
     }
     if (keyboard['arrowleft']) {
-        camera.position.x -= cameraMoveDistance;
+        cameraMoveX = -cameraMoveDistance;
     }
     if (keyboard['arrowright']) {
-        camera.position.x += cameraMoveDistance;
+        cameraMoveX = cameraMoveDistance;
+    }
+
+    if (cameraMoveX !== 0 || cameraMoveZ !== 0) {
+        const cameraMoveVector = new THREE.Vector3(cameraMoveX, 0, cameraMoveZ);
+        const cameraDirection = cameraMoveVector.clone().applyQuaternion(camera.quaternion);
+        camera.position.add(cameraDirection);
     }
 
     renderer.render(scene, camera);
