@@ -53,8 +53,25 @@ function init() {
     grid.material.transparent = true;
     scene.add(grid);
 
+    // Agregar algunos cubos al mapa
+    const cubeGeometry = new THREE.BoxGeometry(50, 50, 50);
+    const cubeMaterial = new THREE.MeshPhongMaterial({ color: 0x00ff00 });
+    for (let i = 0; i < 10; i++) {
+        const cube = new THREE.Mesh(cubeGeometry, cubeMaterial);
+        cube.position.set(
+            Math.random() * 2000 - 1000,
+            25,
+            Math.random() * 2000 - 1000
+        );
+        cube.castShadow = true;
+        cube.receiveShadow = true;
+        scene.add(cube);
+        collidableObjects.push(cube);
+    }
 
     const loader = new FBXLoader();
+
+    // Cargar el modelo Soldier
     loader.load('models/fbx/Bruja.fbx', function (object) {
         console.log('Modelo cargado:', object);
         model = object;
@@ -78,6 +95,30 @@ function init() {
                 activeAction = idleAction;
                 activeAction.play();
             }
+        });
+
+        // Cargar la animación de Caminar
+        loader.load('models/fbx/Caminar.fbx', function (anim) {
+            const caminarAction = mixer.clipAction(anim.animations[0]);
+            actions.caminar = caminarAction;
+        });
+
+        // Cargar la primer animacion
+        loader.load('models/fbx/Fireball.fbx', function (anim) {
+            const MagiaAction = mixer.clipAction(anim.animations[0]);
+            actions.magia = MagiaAction;
+        });
+
+        // Cargar la segunda animación
+        loader.load('models/fbx/magia2.fbx', function (anim) {
+            const magia2Action = mixer.clipAction(anim.animations[0]);
+            actions.magia2 = magia2Action;
+        });
+
+        // Cargar la tercer animación
+        loader.load('models/fbx/magia3.fbx', function (anim) {
+            const magia3Action = mixer.clipAction(anim.animations[0]);
+            actions.magia3 = magia3Action;
         });
 
         window.addEventListener('keydown', handleKeyDown);
