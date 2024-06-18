@@ -6,8 +6,8 @@ import { GUI } from 'three/addons/libs/lil-gui.module.min.js';
 
 let camera, scene, renderer, clock, mixer, model, actions, activeAction, previousAction;
 const keyboard = {};
-const moveSpeed = 250; // Ajusta la velocidad de movimiento del personaje
-const cameraMoveSpeed = 100; // Ajusta la velocidad de movimiento de la cámara
+const moveSpeed = 200; // Ajusta la velocidad de movimiento del personaje
+const cameraMoveSpeed = 10; // Ajusta la velocidad de movimiento de la cámara
 const collidableObjects = []; // Objetos con los que el personaje puede colisionar
 
 const stats = new Stats();
@@ -25,7 +25,8 @@ function init() {
 
     scene = new THREE.Scene();
     scene.background = new THREE.Color(0xa0a0a0);
-    scene.fog = new THREE.Fog(0x050505, 400, 2000); // Ampliar la cantidad de niebla
+    scene.fog = new THREE.Fog(0xa0a0a0, 500, 2000); // Ampliar la cantidad de niebla
+
 
     const hemiLight = new THREE.HemisphereLight(0xffffff, 0x444444);
     hemiLight.position.set(0, 200, 0);
@@ -52,23 +53,7 @@ function init() {
     grid.material.opacity = 0.2;
     grid.material.transparent = true;
     scene.add(grid);
-
-    // Agregar algunos cubos al mapa
-    const cubeGeometry = new THREE.BoxGeometry(50, 50, 50);
-    const cubeMaterial = new THREE.MeshPhongMaterial({ color: 0x00ff00 });
-    for (let i = 0; i < 10; i++) {
-        const cube = new THREE.Mesh(cubeGeometry, cubeMaterial);
-        cube.position.set(
-            Math.random() * 2000 - 1000,
-            25,
-            Math.random() * 2000 - 1000
-        );
-        cube.castShadow = true;
-        cube.receiveShadow = true;
-        scene.add(cube);
-        collidableObjects.push(cube);
-    }
-
+    
     const loader = new FBXLoader();
 
     // Cargar el modelo Soldier
@@ -136,6 +121,7 @@ function init() {
     const controls = new OrbitControls(camera, renderer.domElement);
     controls.target.set(0, 100, 0);
     controls.update();
+    
 
     window.addEventListener('resize', onWindowResize);
 
@@ -197,12 +183,35 @@ function animate() {
     requestAnimationFrame(animate);
 
     const delta = clock.getDelta();
-    const moveDistance = moveSpeed * delta;
+    const moveDistance = moveSpeed * delta; // Ajustar velocidad de movimiento
+    const rotateAngle = Math.PI / 2 * delta; // Ajustar velocidad de rotación
     const cameraMoveDistance = cameraMoveSpeed * delta;
 
     if (mixer) mixer.update(delta);
 
+    let moveX = 0;
+    let moveZ = 0;
 
+    if (keyboard['w']) {
+        moveZ = -moveDistance;
+    }
+    if (keyboard['s']) {
+        moveZ = moveDistance;
+    }
+    if (keyboard['a']) {
+        moveX = -moveDistance;
+    }
+    if (keyboard['d']) {
+        moveX = moveDistance;
+    }
+
+    if (moveX !== 0 || moveZ !== 0) {
+        const moveVector = new THREE.Vector3(moveX, 0, moveZ);
+        model.lookAt(model.position.clone().add(moveVector));
+        if (!checkCollision(model.position.clone().add(moveVector))) {
+            model.position.add(moveVector);
+        }
+    }
 
     renderer.render(scene, camera);
     stats.update();
