@@ -152,11 +152,11 @@ function init() {
 
     // GUI para iluminación y niebla
     const gui = new GUI();
-    const lightFolder = gui.addFolder('Light');
-    const fogFolder = gui.addFolder('Fog');
+    const lightFolder = gui.addFolder('Luz');
+    const fogFolder = gui.addFolder('Niebla');
 
-    lightFolder.add(dirLight, 'intensity', 0, 2, 0.01).name('Intensity');
-    fogFolder.add(scene.fog, 'far', 500, 3000, 1).name('Fog Far');
+    lightFolder.add(dirLight, 'intensity', 0, 2, 0.01).name('Intensidad');
+    fogFolder.add(scene.fog, 'far', 500, 3000, 1).name('Distancia');
 }
 
 function onWindowResize() {
