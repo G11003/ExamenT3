@@ -19,6 +19,48 @@ function init() {
     const container = document.createElement('div');
     document.body.appendChild(container);
 
+    // Añadir ventana emergente
+    const popup = document.createElement('div');
+    popup.style.position = 'absolute';
+    popup.style.top = '50%';
+    popup.style.left = '50%';
+    popup.style.transform = 'translate(-50%, -50%)';
+    popup.style.padding = '20px';
+    popup.style.backgroundColor = '#f0f0f0';
+    popup.style.border = '2px solid #d0d0d0';
+    popup.style.zIndex = 1000;
+    popup.style.fontFamily = 'Century Gothic, sans-serif';
+    popup.style.color = 'black';
+    popup.style.boxShadow = '0 4px 8px rgba(0, 0, 0, 0.1)';
+    popup.style.borderRadius = '10px';
+
+    const popupText = document.createElement('p');
+    popupText.textContent = 'Prueba pa instrucciones';
+    popupText.style.margin = '0 0 20px 0';
+    popupText.style.fontSize = '18px';
+    popup.appendChild(popupText);
+
+    const closeButton = document.createElement('button');
+    closeButton.textContent = 'Cerrar';
+    closeButton.style.backgroundColor = '#d0d0d0';
+    closeButton.style.border = 'none';
+    closeButton.style.padding = '10px 20px';
+    closeButton.style.cursor = 'pointer';
+    closeButton.style.borderRadius = '5px';
+    closeButton.style.transition = 'background-color 0.3s';
+    closeButton.addEventListener('mouseover', () => {
+        closeButton.style.backgroundColor = '#b0b0b0';
+    });
+    closeButton.addEventListener('mouseout', () => {
+        closeButton.style.backgroundColor = '#d0d0d0';
+    });
+    closeButton.addEventListener('click', () => {
+        popup.style.display = 'none';
+    });
+    popup.appendChild(closeButton);
+
+    document.body.appendChild(popup);
+
     camera = new THREE.PerspectiveCamera(50, window.innerWidth / window.innerHeight, 1, 2000);
     camera.position.set(0, 200, 400);
     camera.screenSpacePanning = false;
@@ -155,7 +197,7 @@ function init() {
     clock = new THREE.Clock();
     container.appendChild(stats.dom);
 
-    // GUI para iluminación y niebla
+    // GUI para control de iluminación y niebla
     const gui = new GUI();
     const lightFolder = gui.addFolder('Luz');
     const fogFolder = gui.addFolder('Niebla');
@@ -229,7 +271,7 @@ function animate() {
 
     let moveX = 0;
     let moveZ = 0;
-
+//Teclas para el movimiento
     if (keyboard['w']) {
         moveZ = -moveDistance;
     }
