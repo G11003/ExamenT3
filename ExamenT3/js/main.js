@@ -71,7 +71,7 @@ function init() {
         mixer = new THREE.AnimationMixer(model);
         actions = {};
 
-        // Cargar la animación de reposo
+        // Cargar la animación de reposo (1)
         loader.load('models/fbx/Idle.fbx', function (anim) {
             const idleAction = mixer.clipAction(anim.animations[0]);
             actions.idle = idleAction;
@@ -81,28 +81,33 @@ function init() {
             }
         });
 
-        // Cargar la animación de Caminar
+        // Cargar la animación de Caminar (2)
         loader.load('models/fbx/Caminar.fbx', function (anim) {
             const caminarAction = mixer.clipAction(anim.animations[0]);
             actions.caminar = caminarAction;
         });
 
-        // Cargar la primer animacion
+        // Animacion 3
         loader.load('models/fbx/Fireball.fbx', function (anim) {
             const MagiaAction = mixer.clipAction(anim.animations[0]);
             actions.magia = MagiaAction;
         });
 
-        // Cargar la segunda animación
+        // Animacion 4
         loader.load('models/fbx/magia2.fbx', function (anim) {
             const magia2Action = mixer.clipAction(anim.animations[0]);
             actions.magia2 = magia2Action;
         });
 
-        // Cargar la tercer animación
+        // Animacion 5
         loader.load('models/fbx/magia3.fbx', function (anim) {
             const magia3Action = mixer.clipAction(anim.animations[0]);
             actions.magia3 = magia3Action;
+        });
+        // Animacion 6
+        loader.load('models/fbx/Magis.fbx', function (anim) {
+            const MagisAction = mixer.clipAction(anim.animations[0]);
+            actions.Magis = MagisAction;
         });
 
         // Cargar el modelo de Monokuma y añadirlo a la escena
@@ -191,6 +196,10 @@ function updateMovement() {
     } else if (keyboard['v']) { // Tecla v para la animación de saltar
         if (activeAction !== actions.magia3) {
             switchAction(actions.magia3);
+        }
+    } else if (keyboard['b']) { // Tecla v para la animación de magis
+        if (activeAction !== actions.Magis) {
+            switchAction(actions.Magis);
         }
     } else {
         if (activeAction !== actions.idle) {
