@@ -101,7 +101,7 @@ function init() {
     const loader = new FBXLoader();
 
     // Cargar el modelo principal
-    loader.load('ExamenT3/Models/Bruja.fbx', function (object) {
+    loader.load('Models/Bruja.fbx', function (object) {
         console.log('Modelo cargado:', object);
         model = object;
         model.scale.set(1, 1, 1); // Ajusta la escala del modelo
@@ -117,7 +117,7 @@ function init() {
         actions = {};
 
         // Cargar la animación de reposo (1)
-        loader.load('ExamenT3/Models/Idle.fbx', function (anim) {
+        loader.load('Models/Idle.fbx', function (anim) {
             const idleAction = mixer.clipAction(anim.animations[0]);
             actions.idle = idleAction;
             if (!activeAction) {
@@ -127,36 +127,36 @@ function init() {
         });
 
         // Cargar la animación de Caminar (2)
-        loader.load('ExamenT3/Models/Caminar.fbx', function (anim) {
+        loader.load('Models/Caminar.fbx', function (anim) {
             const caminarAction = mixer.clipAction(anim.animations[0]);
             actions.caminar = caminarAction;
         });
 
         // Animacion 3
-        loader.load('ExamenT3/Models/Fireball.fbx', function (anim) {
+        loader.load('Models/Fireball.fbx', function (anim) {
             const MagiaAction = mixer.clipAction(anim.animations[0]);
             actions.magia = MagiaAction;
         });
 
         // Animacion 4
-        loader.load('ExamenT3/Models/magia2.fbx', function (anim) {//Espinosa Gabriela
+        loader.load('Models/magia2.fbx', function (anim) {//Espinosa Gabriela
             const magia2Action = mixer.clipAction(anim.animations[0]);
             actions.magia2 = magia2Action;
         });
 
         // Animacion 5
-        loader.load('ExamenT3/Models/magia3.fbx', function (anim) {
+        loader.load('Models/magia3.fbx', function (anim) {
             const magia3Action = mixer.clipAction(anim.animations[0]);
             actions.magia3 = magia3Action;
         });
         // Animacion 6
-        loader.load('ExamenT3/Models/Magis.fbx', function (anim) {
+        loader.load('Models/Magis.fbx', function (anim) {
             const MagisAction = mixer.clipAction(anim.animations[0]);
             actions.Magis = MagisAction;
         });
 //Espinosa Gabriela
         // Cargar el modelo de Monokuma y añadirlo a la escena
-        loader.load('ExamenT3/Models/Monokuma.fbx', function (monokuma) {
+        loader.load('Models/Monokuma.fbx', function (monokuma) {
             const brujaScale = new THREE.Box3().setFromObject(model).getSize(new THREE.Vector3());
             const scale = new THREE.Vector3(1 / 140, 1 / 250, 1 / 50).multiply(brujaScale);
             monokuma.scale.set(scale.x, scale.y, scale.z);
