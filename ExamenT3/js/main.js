@@ -38,7 +38,7 @@ function init() {
     popup.style.alignItems = 'center';
 
     const popupText = document.createElement('p');
-    popupText.textContent = 'Holi!\nPulsa WASD para moverte\nPrueba con XCVB para experimentar\ndiferentes animaciones';
+    popupText.innerText = 'Holi!\nPulsa WASD para moverte\nPrueba con XCVB para experimentar\ndiferentes animaciones';
     popupText.style.margin = '0 0 20px 0';
     popupText.style.fontSize = '18px';
     popup.appendChild(popupText);
