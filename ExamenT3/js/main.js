@@ -163,11 +163,16 @@ function init() {
 
             for (let i = 0; i < 10; i++) {
                 const clone = monokuma.clone();
-                clone.position.set(
-                    Math.random() * 2000 - 1000,
-                    0,
-                    Math.random() * 2000 - 1000
-                );
+                let position;
+                do {
+                    position = new THREE.Vector3(
+                        Math.random() * 2000 - 1000,
+                        0,
+                        Math.random() * 2000 - 1000
+                    );
+                    clone.position.copy(position);
+                } while (checkInitialCollision(clone));
+
                 clone.traverse(function (child) {
                     if (child.isMesh) {
                         child.castShadow = true;
@@ -274,7 +279,7 @@ function animate() {
 
     let moveX = 0;
     let moveZ = 0;
-//Teclas para el movimiento
+    //Teclas para el movimiento
     if (keyboard['w']) {
         moveZ = -moveDistance;
     }
@@ -322,6 +327,25 @@ function animate() {
 
     renderer.render(scene, camera);
     stats.update();
+}
+
+function checkInitialCollision(object) {
+    const objectBoundingBox = new THREE.Box3().setFromObject(object);
+
+    // Verificar colisión con el modelo principal
+    const modelBoundingBox = new THREE.Box3().setFromObject(model);
+    if (objectBoundingBox.intersectsBox(modelBoundingBox)) {
+        return true;
+    }
+
+    // Verificar colisión con otros objetos Monokuma
+    for (let i = 0; i < collidableObjects.length; i++) {
+        const otherObjectBoundingBox = new THREE.Box3().setFromObject(collidableObjects[i]);
+        if (objectBoundingBox.intersectsBox(otherObjectBoundingBox)) {
+            return true;
+        }
+    }
+    return false;
 }
 
 function checkCollision(newPosition) {
