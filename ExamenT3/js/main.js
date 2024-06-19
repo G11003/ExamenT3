@@ -33,9 +33,12 @@ function init() {
     popup.style.color = 'black';
     popup.style.boxShadow = '0 4px 8px rgba(0, 0, 0, 0.1)';
     popup.style.borderRadius = '10px';
+    popup.style.display = 'flex';
+    popup.style.flexDirection = 'column';
+    popup.style.alignItems = 'center';
 
     const popupText = document.createElement('p');
-    popupText.textContent = 'Prueba pa instrucciones';
+    popupText.textContent = 'Holi!\nPulsa WASD para moverte\nPrueba con XCVB para experimentar\ndiferentes animaciones';
     popupText.style.margin = '0 0 20px 0';
     popupText.style.fontSize = '18px';
     popup.appendChild(popupText);
