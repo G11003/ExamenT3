@@ -3,7 +3,7 @@ import Stats from 'three/addons/libs/stats.module.js';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import { FBXLoader } from 'three/addons/loaders/FBXLoader.js';
 import { GUI } from 'three/addons/libs/lil-gui.module.min.js';
-
+//Espinosa Gabriela
 let camera, scene, renderer, clock, mixer, model, actions, activeAction, previousAction, controls;
 const keyboard = {};
 const moveSpeed = 250; // Ajusta la velocidad de movimiento del personaje
@@ -11,7 +11,7 @@ const cameraMoveSpeed = 100; // Ajusta la velocidad de movimiento de la cámara
 const collidableObjects = []; // Objetos con los que el personaje puede colisionar
 
 const stats = new Stats();
-
+//Espinosa Gabriela
 init();
 animate();
 
@@ -28,7 +28,7 @@ function init() {
     popup.style.padding = '20px';
     popup.style.backgroundColor = '#f0f0f0';
     popup.style.border = '2px solid #d0d0d0';
-    popup.style.zIndex = 1000;
+    popup.style.zIndex = 1000;//Espinosa Gabriela
     popup.style.fontFamily = 'Century Gothic, sans-serif';
     popup.style.color = 'black';
     popup.style.boxShadow = '0 4px 8px rgba(0, 0, 0, 0.1)';
@@ -39,7 +39,7 @@ function init() {
 
     const popupText = document.createElement('p');
     popupText.innerText = 'Holi!\nPulsa WASD para moverte\nPrueba con XCVB para experimentar\ndiferentes animaciones';
-    popupText.style.margin = '0 0 20px 0';
+    popupText.style.margin = '0 0 20px 0';//Espinosa Gabriela
     popupText.style.fontSize = '18px';
     popup.appendChild(popupText);
 
@@ -47,7 +47,7 @@ function init() {
     closeButton.textContent = 'Cerrar';
     closeButton.style.backgroundColor = '#d0d0d0';
     closeButton.style.border = 'none';
-    closeButton.style.padding = '10px 20px';
+    closeButton.style.padding = '10px 20px';//Espinosa Gabriela
     closeButton.style.cursor = 'pointer';
     closeButton.style.borderRadius = '5px';
     closeButton.style.transition = 'background-color 0.3s';
@@ -67,7 +67,7 @@ function init() {
     camera = new THREE.PerspectiveCamera(50, window.innerWidth / window.innerHeight, 1, 2000);
     camera.position.set(0, 200, 400);
     camera.screenSpacePanning = false;
-
+//Espinosa Gabriela
     scene = new THREE.Scene();
     scene.background = new THREE.Color(0xa0a0a0);
     scene.fog = new THREE.Fog(0x9d0c0c, 400, 2000); // Ampliar la cantidad de niebla
@@ -81,7 +81,7 @@ function init() {
     dirLight.castShadow = true;
     dirLight.shadow.camera.top = 180;
     dirLight.shadow.camera.bottom = -100;
-    dirLight.shadow.camera.left = -120;
+    dirLight.shadow.camera.left = -120;//Espinosa Gabriela
     dirLight.shadow.camera.right = 120;
     scene.add(dirLight);
 
@@ -101,7 +101,7 @@ function init() {
     const loader = new FBXLoader();
 
     // Cargar el modelo principal
-    loader.load('models/fbx/Bruja.fbx', function (object) {
+    loader.load('models/Bruja.fbx', function (object) {
         console.log('Modelo cargado:', object);
         model = object;
         model.scale.set(1, 1, 1); // Ajusta la escala del modelo
@@ -117,7 +117,7 @@ function init() {
         actions = {};
 
         // Cargar la animación de reposo (1)
-        loader.load('models/fbx/Idle.fbx', function (anim) {
+        loader.load('models/Idle.fbx', function (anim) {
             const idleAction = mixer.clipAction(anim.animations[0]);
             actions.idle = idleAction;
             if (!activeAction) {
@@ -127,36 +127,36 @@ function init() {
         });
 
         // Cargar la animación de Caminar (2)
-        loader.load('models/fbx/Caminar.fbx', function (anim) {
+        loader.load('models/Caminar.fbx', function (anim) {
             const caminarAction = mixer.clipAction(anim.animations[0]);
             actions.caminar = caminarAction;
         });
 
         // Animacion 3
-        loader.load('models/fbx/Fireball.fbx', function (anim) {
+        loader.load('models/Fireball.fbx', function (anim) {
             const MagiaAction = mixer.clipAction(anim.animations[0]);
             actions.magia = MagiaAction;
         });
 
         // Animacion 4
-        loader.load('models/fbx/magia2.fbx', function (anim) {
+        loader.load('models/magia2.fbx', function (anim) {//Espinosa Gabriela
             const magia2Action = mixer.clipAction(anim.animations[0]);
             actions.magia2 = magia2Action;
         });
 
         // Animacion 5
-        loader.load('models/fbx/magia3.fbx', function (anim) {
+        loader.load('models/magia3.fbx', function (anim) {
             const magia3Action = mixer.clipAction(anim.animations[0]);
             actions.magia3 = magia3Action;
         });
         // Animacion 6
-        loader.load('models/fbx/Magis.fbx', function (anim) {
+        loader.load('models/Magis.fbx', function (anim) {
             const MagisAction = mixer.clipAction(anim.animations[0]);
             actions.Magis = MagisAction;
         });
-
+//Espinosa Gabriela
         // Cargar el modelo de Monokuma y añadirlo a la escena
-        loader.load('models/fbx/Monokuma.fbx', function (monokuma) {
+        loader.load('models/Monokuma.fbx', function (monokuma) {
             const brujaScale = new THREE.Box3().setFromObject(model).getSize(new THREE.Vector3());
             const scale = new THREE.Vector3(1 / 140, 1 / 250, 1 / 50).multiply(brujaScale);
             monokuma.scale.set(scale.x, scale.y, scale.z);
@@ -178,7 +178,7 @@ function init() {
                         child.castShadow = true;
                         child.receiveShadow = true;
                     }
-                });
+                });//Espinosa Gabriela
                 scene.add(clone);
                 collidableObjects.push(clone);
             }
@@ -189,7 +189,7 @@ function init() {
     }, undefined, function (error) {
         console.error('Error al cargar el modelo:', error);
     });
-
+//Espinosa Gabriela
     renderer = new THREE.WebGLRenderer({ antialias: true });
     renderer.setPixelRatio(window.devicePixelRatio);
     renderer.setSize(window.innerWidth, window.innerHeight);
@@ -202,7 +202,7 @@ function init() {
 
     window.addEventListener('resize', onWindowResize);
 
-    clock = new THREE.Clock();
+    clock = new THREE.Clock();//Espinosa Gabriela
     container.appendChild(stats.dom);
 
     // GUI para control de iluminación y niebla
@@ -212,7 +212,7 @@ function init() {
 
     lightFolder.add(dirLight, 'intensity', 0, 2, 0.01).name('Intensidad');
     fogFolder.add(scene.fog, 'far', 500, 3000, 1).name('Distancia');
-}
+}                   //Espinosa Gabriela
 
 function onWindowResize() {
     camera.aspect = window.innerWidth / window.innerHeight;
@@ -229,7 +229,7 @@ function handleKeyUp(event) {
     keyboard[event.key.toLowerCase()] = false;
     updateMovement();
 }
-
+//Espinosa Gabriela
 function updateMovement() {
     if (keyboard['w'] || keyboard['a'] || keyboard['s'] || keyboard['d']) {
         if (activeAction !== actions.caminar) {
@@ -267,7 +267,7 @@ function switchAction(toAction) {
         activeAction.reset().fadeIn(0.5).play();
     }
 }
-
+//Espinosa Gabriela
 function animate() {
     requestAnimationFrame(animate);
 
@@ -292,7 +292,7 @@ function animate() {
     if (keyboard['d']) {
         moveX = moveDistance;
     }
-
+//Espinosa Gabriela
     if (moveX !== 0 || moveZ !== 0) {
         const moveVector = new THREE.Vector3(moveX, 0, moveZ);
         const direction = moveVector.clone().applyQuaternion(camera.quaternion);
@@ -318,7 +318,7 @@ function animate() {
     if (keyboard['arrowright']) {
         cameraMoveX = cameraMoveDistance;
     }
-
+//Espinosa Gabriela
     if (cameraMoveX !== 0 || cameraMoveZ !== 0) {
         const cameraMoveVector = new THREE.Vector3(cameraMoveX, 0, cameraMoveZ);
         const cameraDirection = cameraMoveVector.clone().applyQuaternion(camera.quaternion);
@@ -328,7 +328,7 @@ function animate() {
     renderer.render(scene, camera);
     stats.update();
 }
-
+//Espinosa Gabriela
 function checkInitialCollision(object) {
     const objectBoundingBox = new THREE.Box3().setFromObject(object);
 
@@ -347,7 +347,7 @@ function checkInitialCollision(object) {
     }
     return false;
 }
-
+//Espinosa Gabriela
 function checkCollision(newPosition) {
     const box = new THREE.Box3().setFromObject(model);
     const modelBoundingBox = box.clone().translate(newPosition.sub(model.position));
